@@ -4,8 +4,10 @@ Data come from wf_simulation.py with --seed 7 (recorded below so the document
 is reproducible). Run:  python3 build_lab_doc.py
 """
 
+import os
+
 from docx import Document
-from docx.shared import Pt, RGBColor
+from docx.shared import Pt, RGBColor, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 ANSWER = RGBColor(0x1F, 0x4E, 0x79)  # dark blue for filled-in answers
@@ -43,6 +45,26 @@ def add_table(doc, sim_id):
         c1.font.color.rgb = ANSWER
         c2 = row[2].paragraphs[0].add_run(str(ls))
         c2.font.color.rgb = ANSWER
+    doc.add_paragraph()
+    add_plot(doc, sim_id)
+
+
+def add_plot(doc, sim_id):
+    """Embed the trajectory plot for this simulation (Run 1), if present."""
+    img = os.path.join("plots", f"sim{sim_id}.png")
+    if not os.path.exists(img):
+        return
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.add_run().add_picture(img, width=Inches(5.3))
+    cap = doc.add_paragraph()
+    cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    cr = cap.add_run(
+        f"Representative output (Run 1): frequency of A across 10 replicate "
+        f"populations over 100 generations."
+    )
+    cr.italic = True
+    cr.font.size = Pt(8)
     doc.add_paragraph()
 
 

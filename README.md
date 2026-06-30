@@ -14,12 +14,20 @@ worksheet data come from a faithful reproduction of the same model:
 - `wf_simulation.py` — the Wright–Fisher drift/selection simulator
   (diploid N, viability selection via genotype fitnesses; 10 replicates ×
   100 generations per run).
-- `build_lab_doc.py` — builds the completed `.docx` from the recorded results.
+- `make_plots.py` — renders the allele-frequency trajectory plots
+  (`plots/sim1.png` … `sim6.png`), styled like the app's graph.
+- `build_lab_doc.py` — builds the completed `.docx` from the recorded results
+  and embeds the plots.
+
+The worksheet itself only requires the numeric fixed/lost tables and the
+written answers; the embedded trajectory graphs are an optional addition that
+mirrors what the live app displays.
 
 Reproduce the numbers in the document with:
 
 ```bash
 python3 wf_simulation.py --seed 7   # prints the six simulations' results
+python3 make_plots.py               # regenerates plots/sim1.png ... sim6.png
 python3 build_lab_doc.py            # rebuilds Lab09_PopGenetics_Completed.docx
 ```
 
