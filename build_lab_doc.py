@@ -7,10 +7,8 @@ is reproducible). Run:  python3 build_lab_doc.py
 import os
 
 from docx import Document
-from docx.shared import Pt, RGBColor, Inches
+from docx.shared import Pt, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-
-ANSWER = RGBColor(0x1F, 0x4E, 0x79)  # dark blue for filled-in answers
 
 # Recorded results: each sim -> list of (fixed, lost) per run (seed 7).
 DATA = {
@@ -25,9 +23,7 @@ DATA = {
 
 def add_answer(doc, text):
     p = doc.add_paragraph()
-    run = p.add_run(text)
-    run.font.color.rgb = ANSWER
-    run.italic = True
+    p.add_run(text)
     return p
 
 
@@ -41,10 +37,8 @@ def add_table(doc, sim_id):
     for i, (fx, ls) in enumerate(DATA[sim_id], 1):
         row = t.add_row().cells
         row[0].text = f"Run {i}"
-        c1 = row[1].paragraphs[0].add_run(str(fx))
-        c1.font.color.rgb = ANSWER
-        c2 = row[2].paragraphs[0].add_run(str(ls))
-        c2.font.color.rgb = ANSWER
+        row[1].paragraphs[0].add_run(str(fx))
+        row[2].paragraphs[0].add_run(str(ls))
     doc.add_paragraph()
     add_plot(doc, sim_id)
 
@@ -60,46 +54,39 @@ def add_plot(doc, sim_id):
     cap = doc.add_paragraph()
     cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
     cr = cap.add_run(
-        f"Representative output (Run 1): frequency of A across 10 replicate "
-        f"populations over 100 generations."
+        "Representative output (Run 1): frequency of A across 10 replicate "
+        "populations over 100 generations."
     )
-    cr.italic = True
-    cr.font.size = Pt(8)
+    cr.font.size = Pt(9)
     doc.add_paragraph()
 
 
-def h(doc, text, size=13):
+def h(doc, text, size=12):
     p = doc.add_paragraph()
     r = p.add_run(text)
     r.bold = True
-    r.font.size = Pt(size)
     return p
 
 
 def main():
     doc = Document()
 
+    # Plain, consistent base font for the whole document.
+    normal = doc.styles["Normal"]
+    normal.font.name = "Times New Roman"
+    normal.font.size = Pt(12)
+
     title = doc.add_paragraph()
-    title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     tr = title.add_run("Lab 9: Population Genetics")
     tr.bold = True
-    tr.font.size = Pt(18)
-    sub = doc.add_paragraph()
-    sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    sr = sub.add_run("Exercise Worksheet — Completed")
-    sr.font.size = Pt(12)
-    doc.add_paragraph()
 
     note = doc.add_paragraph()
-    nr = note.add_run(
-        "Simulator: Wright-Fisher drift/selection model "
-        "(https://evobir.shinyapps.io/wf_model/). Each run = 10 replicate "
-        "populations evolved for 100 generations; the tables record how many "
-        "of the 10 replicates ended with allele A fixed (f(A)=1) or lost "
-        "(f(A)=0). Answers in blue."
+    note.add_run(
+        "Exercise worksheet. Simulator: Wright-Fisher drift/selection model "
+        "(https://evobir.shinyapps.io/wf_model/). Each run uses 10 replicate "
+        "populations over 100 generations; the tables record how many of the "
+        "10 replicates ended with allele A fixed (f(A)=1) or lost (f(A)=0)."
     )
-    nr.italic = True
-    nr.font.size = Pt(9)
     doc.add_paragraph()
 
     # ---- Simulation 1 ----
