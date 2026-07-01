@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#7C2020" />
+<title>EverPage — The Living Book</title>
+<meta name="description" content="Turn the pages of EverPage: the reading app that turns reading into a streak. Track every page, build a daily streak, race your friends. Join the waitlist." />
+<meta property="og:title" content="EverPage — the reading app that gives you a streak" />
+<meta property="og:description" content="Turn every page. Build your streak. Read with friends. Join the waitlist." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles-v3.css" />
+</head>
+<body class="v3 is-closed">
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="cursor" aria-hidden="true"></div>
+<div id="candleGlow" aria-hidden="true"></div>
+
+<!-- top control rail -->
+<div id="rail" aria-hidden="false">
+  <button id="lamp" class="ctl lamp" aria-label="Toggle night mode" title="Reading lamp (N)">
+    <span class="lamp-shade"></span><span class="lamp-glow"></span>
+  </button>
+  <button id="soundBtn" class="ctl" aria-label="Toggle page-flip sound" title="Sound">
+    <svg class="ic-on" viewBox="0 0 24 24" width="18" height="18"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8a5 5 0 0 1 0 8M18.5 5.5a9 9 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    <svg class="ic-off" viewBox="0 0 24 24" width="18" height="18" hidden><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+  </button>
+  <div class="genre-swatches" role="group" aria-label="Recolor the book">
+    <button class="swatch" data-accent="#7C2020" data-name="Classic" style="--s:#7C2020" title="Classic"></button>
+    <button class="swatch" data-accent="#234E52" data-name="Evergreen" style="--s:#234E52" title="Evergreen"></button>
+    <button class="swatch" data-accent="#3454b4" data-name="Midnight" style="--s:#3454b4" title="Midnight"></button>
+    <button class="swatch" data-accent="#a8562a" data-name="Amber" style="--s:#a8562a" title="Amber"></button>
+    <button class="swatch" data-accent="#6b3b8f" data-name="Plum" style="--s:#6b3b8f" title="Plum"></button>
+  </div>
+</div>
+
+<!-- the book -->
+<div id="stage">
+  <div id="book" aria-live="polite">
+    <div class="book-edge left"></div>
+    <div class="book-edge right"></div>
+
+    <!-- PAGE 0 — COVER -->
+    <section class="page cover-page" data-page="0">
+      <div class="page-face">
+        <div class="cover-art">
+          <div class="foil-emboss">EST. 2026 · A READING APP</div>
+          <h1 class="wordmark">EverPage</h1>
+          <div class="cover-rule"></div>
+          <p class="cover-tag">Read together.<br/>Track everything.<br/>Build your streak.</p>
+          <button id="startBtn" class="btn cta">Open the book
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="cover-hint">click the page edge, use ← → , or swipe</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 1 — HERO -->
+    <section class="page" data-page="1" hidden>
+      <div class="page-face split">
+        <div class="col">
+          <p class="eyebrow">Chapter One · The habit that sticks</p>
+          <h2 class="display">You start every book.<br/><em>You finish… some.</em></h2>
+          <p class="lede">EverPage turns reading into a <mark class="hl">streak you won't want to break</mark>. Log every page, keep your daily goal alive, and pull your friends into the chapter with you.</p>
+          <p class="mini-note"><span class="dot"></span> <b id="spotCount">2,014</b> readers already on the shelf</p>
+        </div>
+        <div class="col center">
+          <div class="phone" data-tilt>
+            <div class="phone-notch"></div>
+            <img src="assets/screen-9203.jpg" alt="EverPage Your Shelf screen" loading="lazy"/>
+            <div class="phone-glare"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2 — SHELF -->
+    <section class="page" data-page="2" hidden>
+      <div class="page-face split">
+        <div class="col">
+          <span class="chapter-no">02</span>
+          <h3 class="feat-title">Your Reading Shelf</h3>
+          <p class="feat-copy">Add books, track your progress page by page, and keep every title you're reading — or have ever read — in one beautiful place.</p>
+          <div class="genre-row" data-genres>
+            <span class="genre on">Literary Fiction</span><span class="genre">Historical Fiction</span>
+            <span class="genre">Non-Fiction</span><span class="genre">Romance</span><span class="genre">Sci-Fi</span>
+          </div>
+        </div>
+        <div class="col center">
+          <div class="phone" data-tilt>
+            <div class="phone-notch"></div>
+            <img src="assets/screen-addbook.jpg" alt="EverPage Add a book screen" loading="lazy"/>
+            <div class="phone-glare"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3 — STREAKS -->
+    <section class="page" data-page="3" hidden>
+      <div class="page-face split">
+        <div class="col center">
+          <div class="ring-wrap">
+            <svg class="goal-ring" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="52"/><circle class="ring-fill" cx="60" cy="60" r="52" data-pct="73"/></svg>
+            <div class="ring-center"><b class="count" data-count="33">0</b><span>of 45 min</span></div>
+            <div class="flame"><span class="flame-core"></span></div>
+          </div>
+        </div>
+        <div class="col">
+          <span class="chapter-no">03</span>
+          <h3 class="feat-title">Daily Streaks &amp; Goals</h3>
+          <p class="feat-copy">Set a daily reading goal in minutes. Hit it every day to build your streak. Streak freezes keep your progress safe on the busy days.</p>
+          <div class="freeze-row"><span class="freeze">❄️ Freeze</span><span class="freeze">❄️ Freeze</span><span class="freeze used">❄️ Used</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4 — FRIENDS -->
+    <section class="page dark" data-page="4" hidden>
+      <div class="page-face split">
+        <div class="col">
+          <span class="chapter-no">04</span>
+          <h3 class="feat-title light">Read with Friends</h3>
+          <p class="feat-copy light">See what your friends are reading right now, cheer each other on the leaderboard, and share the lines that wrecked you.</p>
+          <div class="compare" data-compare>
+            <div class="cmp-row"><span class="cmp-name">You</span><div class="cmp-bar"><i style="--w:100%" class="me"></i></div><b>24p</b></div>
+            <div class="cmp-row"><span class="cmp-name">neelba…</span><div class="cmp-bar"><i style="--w:14%" class="them"></i></div><b>1p</b></div>
+            <div class="cmp-row"><span class="cmp-name">testjess</span><div class="cmp-bar"><i style="--w:4%" class="them"></i></div><b>0p</b></div>
+            <div class="cmp-badge">You're ahead 🏆</div>
+          </div>
+        </div>
+        <div class="col center">
+          <div class="phone" data-tilt>
+            <div class="phone-notch"></div>
+            <img src="assets/screen-compare.jpg" alt="EverPage Friends compare screen" loading="lazy"/>
+            <div class="phone-glare"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 5 — WRAPPED GENERATOR -->
+    <section class="page" data-page="5" hidden>
+      <div class="page-face split">
+        <div class="col">
+          <span class="chapter-no">05</span>
+          <h3 class="feat-title">Your 2026 Wrapped</h3>
+          <p class="feat-copy">Every reader gets a personal year in review. Try it — type your name and watch your card build. This is what EverPage makes for you.</p>
+          <label class="field-label" for="wName">Your name</label>
+          <input id="wName" class="w-input" type="text" maxlength="18" placeholder="e.g. Lea" autocomplete="off"/>
+          <div class="w-controls">
+            <button class="btn ghost" id="wShuffle">🎲 Shuffle stats</button>
+            <button class="btn" id="wDownload">⬇ Download card</button>
+          </div>
+        </div>
+        <div class="col center">
+          <canvas id="wrapped" width="540" height="675" aria-label="Your personalized reading Wrapped card"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 6 — WAITLIST -->
+    <section class="page" data-page="6" hidden>
+      <div class="page-face center-page">
+        <div class="join-inner">
+          <p class="eyebrow center">The final page · Chapter you</p>
+          <h2 class="display center">Be on <em>page one.</em></h2>
+          <p class="lede center">EverPage is almost open. Join the waitlist for early access, first dibs on streak freezes, and a founding-reader badge.</p>
+          <form class="join-form" id="bigJoin" data-join>
+            <div class="jf-field">
+              <input type="email" name="email" inputmode="email" autocomplete="email" placeholder="Your best email" aria-label="Email" required/>
+              <button type="submit" class="btn">Save my spot
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <p class="jf-fine">No spam, just page-turns. Unsubscribe anytime.</p>
+          </form>
+          <div class="join-success" hidden>
+            <div class="ticket"><div class="ticket-stub">📖</div>
+              <div class="ticket-body"><b>You're on the shelf!</b><span>You're reader <i data-place>#2,015</i>. Check your inbox for the secret first chapter.</span></div>
+            </div>
+          </div>
+          <div class="socials">
+            <a class="soc" href="https://www.instagram.com/everpageofficial" target="_blank" rel="noopener">Instagram</a>
+            <a class="soc" href="https://www.tiktok.com/@everpageofficial" target="_blank" rel="noopener">TikTok</a>
+            <a class="soc" href="https://substack.com/@leaateverpage" target="_blank" rel="noopener">Substack</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 7 — BACK COVER -->
+    <section class="page cover-page back" data-page="7" hidden>
+      <div class="page-face">
+        <div class="cover-art">
+          <blockquote>“A reader lives a thousand lives before he dies. The man who never reads lives only one.”<cite>— George R.R. Martin</cite></blockquote>
+          <div class="cover-rule"></div>
+          <span class="bc-mark">EverPage</span>
+          <button class="btn ghost" id="restartBtn">↺ Read it again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- flipping leaf overlay (JS drives this) -->
+    <div id="leaf" aria-hidden="true"><div class="leaf-front"></div><div class="leaf-back"></div></div>
+
+    <!-- page turn hot-zones -->
+    <button id="navPrev" class="nav-zone left" aria-label="Previous page"><span class="nav-hint">‹</span></button>
+    <button id="navNext" class="nav-zone right" aria-label="Next page"><span class="nav-hint">›</span></button>
+  </div>
+
+  <!-- footer scrubber -->
+  <div id="scrubber">
+    <button id="btnPrev" class="scrub-btn" aria-label="Previous">‹</button>
+    <div id="dots" class="dots"></div>
+    <button id="btnNext" class="scrub-btn" aria-label="Next">›</button>
+    <div id="folio" class="folio"><span id="folioNum">1</span> / <span id="folioTot">8</span></div>
+  </div>
+</div>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div id="v-badge">v3 · The Living Book</div>
+
+<script src="app-v3.js"></script>
+</body>
+</html>
