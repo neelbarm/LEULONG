@@ -148,9 +148,10 @@
         if (p.y - p.s > H) { p.y = -p.s; p.x = Math.random() * W; }
         fxc.save();
         fxc.translate(p.x, p.y); fxc.rotate(p.rot);
-        fxc.fillStyle = `rgba(35,78,82,${p.a})`;
+        const night = document.body.classList.contains("night");
+        fxc.fillStyle = night ? `rgba(255,198,122,${p.a * 1.5})` : `rgba(35,78,82,${p.a})`;
         fxc.fillRect(-p.s / 2, -p.s * 0.7, p.s, p.s * 1.4);
-        fxc.strokeStyle = `rgba(124,32,32,${p.a * 0.8})`;
+        fxc.strokeStyle = night ? `rgba(255,150,70,${p.a})` : `rgba(124,32,32,${p.a * 0.8})`;
         fxc.lineWidth = devicePixelRatio;
         fxc.strokeRect(-p.s / 2, -p.s * 0.7, p.s, p.s * 1.4);
         fxc.restore();
@@ -262,8 +263,118 @@
     else { ctx.clearRect(0, 0, CW, CH); rafC = null; }
   }
 
-  /* ---------- keyboard: Enter opens the book from cover ---------- */
+  /* ---------- READING LAMP / NIGHT MODE ---------- */
+  const NIGHT_KEY = "everpage_night";
+  const lamp = $("#lamp");
+  const setNight = (on, save = true) => {
+    document.body.classList.toggle("night", on);
+    document.querySelector('meta[name=theme-color]')
+      ?.setAttribute("content", on ? "#160f09" : "#7C2020");
+    if (save) { try { localStorage.setItem(NIGHT_KEY, on ? "1" : "0"); } catch {} }
+  };
+  try { if (localStorage.getItem(NIGHT_KEY) === "1") setNight(true, false); } catch {}
+  lamp?.addEventListener("click", () => {
+    setNight(!document.body.classList.contains("night"));
+    lamp.animate?.(
+      [{ transform: "translateX(-50%) translateY(9px)" }, { transform: "translateX(-50%) translateY(0)" }],
+      { duration: 300, easing: "cubic-bezier(.3,1.5,.5,1)" });
+  });
+
+  /* ---------- CHAPTER SPINE NAV ---------- */
+  const spine = $("#spine");
+  const titles = { 1: "Open", 2: "Shelf", 3: "Streaks", 4: "Friends", 5: "Stats", 6: "Join", 7: "Colophon" };
+  const dots = [];
+  if (spine) {
+    spreads.forEach((s) => {
+      const f = +s.dataset.folio;
+      const b = document.createElement("button");
+      b.className = "spine-dot";
+      b.setAttribute("aria-label", `Go to ${titles[f] || "chapter " + f}`);
+      b.innerHTML = `<span class="spine-label">${String(f).padStart(2, "0")} · ${titles[f] || ""}</span>`;
+      b.addEventListener("click", () => s.scrollIntoView({ behavior: "smooth", block: "start" }));
+      spine.appendChild(b);
+      dots.push({ el: b, sec: s });
+    });
+    const updateSpine = () => {
+      const mid = scrollY + innerHeight / 2;
+      let cur = 1;
+      spreads.forEach((s) => { if (s.offsetTop <= mid) cur = +s.dataset.folio; });
+      dots.forEach((d) => d.el.classList.toggle("active", +d.sec.dataset.folio === cur));
+    };
+    addEventListener("scroll", updateSpine, { passive: true });
+    updateSpine();
+  }
+
+  /* ---------- LIVE 'READING NOW' TICKER ---------- */
+  const tickText = $("#tickText");
+  const ticks = [
+    "Aisha just hit a 45-day streak 🔥",
+    "Marcus finished East of Eden 📗",
+    "Priya added Harry Potter to her shelf ✨",
+    "Someone in Lisbon read 62 pages tonight 🌙",
+    "Lea shared a quote from The Untethered Soul 💬",
+    "Jordan and Sam are neck-and-neck this week 🏁",
+    "2,014 readers are building a streak right now 📈",
+  ];
+  if (tickText) {
+    tickText.textContent = ticks[0];
+    if (!reduce) {
+      let ti = 0;
+      setInterval(() => {
+        tickText.style.opacity = "0";
+        setTimeout(() => {
+          ti = (ti + 1) % ticks.length;
+          tickText.textContent = ticks[ti];
+          tickText.style.opacity = "1";
+        }, 380);
+      }, 3600);
+    }
+  }
+
+  /* ---------- SOFT CURSOR (fine pointers) ---------- */
+  if (!reduce && matchMedia("(pointer:fine)").matches) {
+    const cur = $("#cursor");
+    document.body.classList.add("has-cursor");
+    let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
+    addEventListener("mousemove", (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
+    (function follow() {
+      cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2;
+      if (cur) cur.style.transform = `translate(${cx}px,${cy}px)`;
+      requestAnimationFrame(follow);
+    })();
+    const hoverSel = "a,button,input,.genre,.phone,.spine-dot,.page-curl";
+    document.addEventListener("mouseover", (e) => { if (e.target.closest?.(hoverSel)) cur?.classList.add("big"); });
+    document.addEventListener("mouseout", (e) => { if (e.target.closest?.(hoverSel)) cur?.classList.remove("big"); });
+  }
+
+  /* ---------- MAGNETIC BUTTONS ---------- */
+  if (!reduce && matchMedia("(pointer:fine)").matches) {
+    $$(".open-btn,.shelf-cta,.jf-field button,.mini-join button").forEach((b) => {
+      b.addEventListener("mousemove", (e) => {
+        const r = b.getBoundingClientRect();
+        const mx = e.clientX - (r.left + r.width / 2);
+        const my = e.clientY - (r.top + r.height / 2);
+        b.style.transform = `translate(${mx * 0.22}px,${my * 0.32}px)`;
+      });
+      b.addEventListener("mouseleave", () => { b.style.transform = ""; });
+    });
+  }
+
+  /* ---------- PAGE CURL → next spread ---------- */
+  $$(".page-curl").forEach((pc) => {
+    pc.addEventListener("click", () => {
+      const sec = pc.closest(".spread");
+      const f = +sec.dataset.folio;
+      const next = spreads.find((s) => +s.dataset.folio === f + 1);
+      (next || sec).scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  /* ---------- keyboard: Enter opens; N toggles night ---------- */
   addEventListener("keydown", (e) => {
     if (e.key === "Enter" && document.body.classList.contains("is-closed")) openBook();
+    if ((e.key === "n" || e.key === "N") && document.body.classList.contains("is-open")) {
+      setNight(!document.body.classList.contains("night"));
+    }
   });
 })();

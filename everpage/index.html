@@ -25,6 +25,26 @@
 <!-- floating pages / dust particles -->
 <canvas id="fx" aria-hidden="true"></canvas>
 
+<!-- soft cursor glow (fine pointers only) -->
+<div id="cursor" aria-hidden="true"></div>
+
+<!-- warm candlelight glow for night mode -->
+<div id="candleGlow" aria-hidden="true"></div>
+
+<!-- reading lamp = night-mode toggle -->
+<button id="lamp" class="lamp" aria-label="Pull the reading lamp (toggle night mode)" title="Reading lamp">
+  <span class="lamp-cord"></span>
+  <span class="lamp-shade"></span>
+  <span class="lamp-glow"></span>
+  <span class="lamp-knob"></span>
+</button>
+
+<!-- chapter spine navigator (built by JS) -->
+<nav id="spine" aria-label="Jump to chapter"></nav>
+
+<!-- live 'reading now' ticker -->
+<div id="ticker" aria-hidden="true"><span class="tick-dot"></span><span id="tickText">Loading the shelf…</span></div>
+
 <!-- ===== THE BOOK COVER (intro) ===== -->
 <section id="cover" aria-label="EverPage — open the book">
   <div class="cover-scene">
@@ -64,7 +84,7 @@
     <div class="leaf leaf-left reveal">
       <p class="eyebrow">Chapter One · The habit that sticks</p>
       <h2 class="display">You start every&nbsp;book.<br /><em>You finish&hellip; some.</em></h2>
-      <p class="lede">EverPage turns reading into a streak you won't want to break. Log every page, keep your daily goal alive, and pull your friends into the chapter with you.</p>
+      <p class="lede">EverPage turns reading into a <mark class="hl">streak you won't want to break</mark>. Log every page, keep your daily goal alive, and pull your friends into the chapter with you.</p>
       <form class="mini-join" data-join>
         <input type="email" name="email" inputmode="email" autocomplete="email" placeholder="you@email.com" aria-label="Email address" required />
         <button type="submit">Get early access</button>
