@@ -331,14 +331,28 @@ body.is-open #folio{opacity:1}
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width:860px){
-  .spread{grid-template-columns:1fr;gap:34px;text-align:center;min-height:auto;padding:80px 24px}
+  .spread{grid-template-columns:1fr;gap:34px;text-align:center;min-height:auto;padding:72px 22px}
   .spread.feature .leaf-left{order:2}
   .spread.feature .leaf-right{order:1}
   .lede,.feat-copy{margin-left:auto;margin-right:auto}
   .mini-join,.genre-row,.freeze-row,.compare{justify-content:center;margin-left:auto;margin-right:auto}
-  .display br{display:none}
+  .mini-note{justify-content:center}
   .page-curl{display:none}
-  .float-badge{font-size:12px;padding:8px 11px}
+  .float-badge{display:none}        /* avoid overlapping the phone on small screens */
+  #ribbon{display:none}             /* the side bookmark would cover text */
+  .phone{width:min(78vw,270px)}
+}
+@media (max-width:560px){
+  .display{font-size:clamp(30px,8.4vw,44px)}
+  .lede{font-size:16px}
+  .jf-field{flex-direction:column;padding:10px}       /* stack email + button */
+  .jf-field input{text-align:center;font-size:16px}   /* 16px avoids iOS zoom-on-focus */
+  .jf-field button{width:100%;padding:15px;justify-content:center}
+  .mini-join input,.mini-join button{width:100%;flex-basis:100%}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .socials{gap:10px}
+  .soc{padding:12px 18px}
+  #folio{bottom:10px;right:10px;font-size:12px}
 }
 
 /* confetti canvas */

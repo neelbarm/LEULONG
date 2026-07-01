@@ -139,7 +139,8 @@
     a: 0.05 + Math.random() * 0.12,
   });
   if (!reduce) {
-    pages = Array.from({ length: 34 }, mkPage);
+    const COUNT = innerWidth < 640 ? 16 : 34;   // lighter on phones
+    pages = Array.from({ length: COUNT }, mkPage);
     (function loop() {
       fxc.clearRect(0, 0, W, H);
       pages.forEach((p) => {
