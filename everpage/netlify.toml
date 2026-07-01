@@ -1,0 +1,6 @@
+# EverPage is a static site — no build step.
+# If you deploy from GitHub, set Base directory = "everpage" in the Netlify UI;
+# this publishes that folder as the site root.
+[build]
+  publish = "."
+  command = ""
