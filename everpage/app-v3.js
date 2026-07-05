@@ -310,9 +310,11 @@
   /* ---------- CURSOR GLOW + MAGNETIC ---------- */
   if (!reduce && matchMedia("(pointer:fine)").matches) {
     const curEl = $("#cursor");
-    document.body.classList.add("has-cursor");
-    let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
-    addEventListener("mousemove", (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
+    let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy, shown = false;
+    addEventListener("mousemove", (e) => {
+      tx = e.clientX; ty = e.clientY;
+      if (!shown) { shown = true; document.body.classList.add("has-cursor"); } // reveal only after real movement
+    }, { passive: true });
     (function follow() { cx += (tx - cx) * 0.2; cy += (ty - cy) * 0.2; if (curEl) curEl.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(follow); })();
     const sel = "a,button,input,.genre,.phone,.swatch,.dots i,.nav-zone";
     document.addEventListener("mouseover", (e) => { if (e.target.closest?.(sel)) curEl?.classList.add("big"); });

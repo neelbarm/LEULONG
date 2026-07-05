@@ -113,10 +113,9 @@ body.night #rail,body.night #scrubber{background:rgba(40,28,18,.8);border-color:
 .cover-rule{width:60px;height:2px;background:rgba(226,193,132,.6);margin:14px 0}
 .cover-tag{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2.4vw,20px);line-height:1.5;margin:0 0 12px;color:#f0e2c9}
 .cover-hint{margin-top:12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(240,226,201,.6)}
-.back .cover-art blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(15px,2.1vw,23px);line-height:1.34;margin:0;color:#f3e6cf}
-.back cite{display:block;font-style:normal;font-size:14px;color:rgba(240,226,201,.8);margin-top:9px}
-.back .cover-art{gap:14px}
-.back .cover-rule{margin:2px 0}
+.back .cover-art blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.6vw,28px);line-height:1.4;margin:0;color:#f3e6cf}
+.back cite{display:block;font-style:normal;font-size:15px;color:rgba(240,226,201,.8);margin-top:14px}
+.back .cover-art{gap:18px}
 .bc-mark{font-family:var(--serif);font-weight:900;font-size:24px;color:#e4c184}
 
 /* ---------- typography / shared ---------- */
@@ -204,6 +203,7 @@ mark.hl{background:linear-gradient(180deg,transparent 58%,rgba(182,146,78,.6) 58
 .jf-field input:focus{outline:none}
 .jf-fine{font-size:12px;color:var(--muted);margin:12px 0 0;text-align:center}
 .join-success{margin-top:18px;display:flex;justify-content:center;animation:rise .6s both}
+.join-success[hidden]{display:none}   /* keep hidden until signup (class was overriding [hidden]) */
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
 .ticket{display:flex;background:var(--paper);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);max-width:430px;text-align:left}
 .ticket-stub{display:grid;place-items:center;font-size:26px;background:var(--accent);padding:0 18px}
@@ -251,7 +251,7 @@ body.is-closed #scrubber{opacity:0;pointer-events:none}
   .page.flip{transition:none;backface-visibility:visible;z-index:auto;box-shadow:var(--shadow)}
   .page-face{position:relative;min-height:calc(100dvh - 190px);justify-content:center;padding:34px 22px}
   .cover-page .page-face{min-height:calc(100dvh - 190px)}
-  .page-face.split{grid-template-columns:1fr;gap:22px;justify-items:center;text-align:center}
+  .page-face.split{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:26px;text-align:center}
   .page-face.split .col{width:100%}
   .lede,.feat-copy{margin-left:auto;margin-right:auto}
   .genre-row,.freeze-row,.compare,.w-controls{justify-content:center}
