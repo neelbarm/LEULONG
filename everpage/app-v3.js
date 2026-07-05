@@ -353,6 +353,19 @@
     const list = stored(); if (!list.includes(email)) list.push(email);
     try { localStorage.setItem(KEY, JSON.stringify(list)); } catch {}
     refreshCount();
+    // real capture: email each signup to the EverPage inbox (FormSubmit, no account)
+    try {
+      fetch("https://formsubmit.co/ajax/everpageofficial@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          email,
+          _subject: "New EverPage waitlist signup 📖",
+          _template: "table",
+          _captcha: "false",
+        }),
+      }).catch(() => {});
+    } catch {}
     const wrap = form.closest(".join-inner");
     const success = $(".join-success", wrap), placeEl = $("[data-place]", wrap);
     if (placeEl) placeEl.textContent = "#" + fmt(base + list.length);
