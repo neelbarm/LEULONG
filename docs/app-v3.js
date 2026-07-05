@@ -379,6 +379,7 @@
           _subject: "New EverPage waitlist signup 📖",
           _template: "table",
           _captcha: "false",
+          _autoresponse: "You're on the EverPage waitlist! We'll email you the moment early access opens. Happy reading — the EverPage team.",
         }),
       }).catch(() => {});
     } catch {}
