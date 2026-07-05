@@ -64,6 +64,8 @@
     });
     cur = i; runPageAnims(byIndex(i)); updateChrome();
   }
+  const isMobile = () => matchMedia("(max-width:820px)").matches;
+
   function turn(to) {
     to = clamp(to, 0, TOTAL - 1);
     if (animating || to === cur) return;
@@ -71,8 +73,22 @@
     animating = true;
     flipSound(dir);
     const outgoing = byIndex(cur), incoming = byIndex(to);
-    incoming.hidden = false;
 
+    // MOBILE: no fixed-box flip — swap pages and fade the new one in, then
+    // scroll to the top so the whole page (incl. the phone) is visible.
+    if (isMobile()) {
+      outgoing.hidden = true; outgoing.classList.remove("showing");
+      outgoing.style.transform = ""; outgoing.classList.remove("flip");
+      incoming.hidden = false; incoming.classList.add("showing");
+      incoming.style.animation = "pageIn .42s both";
+      runPageAnims(incoming);
+      cur = to; updateChrome();
+      scrollTo(0, 0);
+      setTimeout(() => { incoming.style.animation = ""; animating = false; }, 440);
+      return;
+    }
+
+    incoming.hidden = false;
     const SH = "36px 0 60px rgba(0,0,0,.32)";
     if (dir > 0) {
       incoming.style.zIndex = 3; incoming.classList.add("showing"); runPageAnims(incoming);
