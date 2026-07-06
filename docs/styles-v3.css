@@ -302,6 +302,29 @@ body.is-closed #scrubber{opacity:0;pointer-events:none}
   .page:not(.cover-page):not(.dark) .page-face::after{bottom:8px}
 }
 
+/* ===================== PAGE DETAILS ===================== */
+/* faint ruled lines on paper pages (whisper-subtle, reads as texture) */
+.page:not(.cover-page):not(.dark){
+  background:
+    repeating-linear-gradient(180deg, transparent 0 33px, rgba(90,66,38,.035) 33px 34px),
+    var(--paper);
+}
+/* drop-cap on each chapter's body copy (desktop, where text is left-aligned) */
+@media (min-width:821px){
+  .page:not(.cover-page) .feat-copy::first-letter{
+    font-family:var(--serif);font-weight:900;font-size:3.3em;line-height:.72;float:left;
+    margin:6px 10px 0 0;color:var(--accent)}
+  .page.dark .feat-copy::first-letter{color:var(--gold)}
+}
+
+/* ambient warm glow on the book edges + ribbon in night mode */
+body.night .book-edge{box-shadow:0 12px 30px rgba(0,0,0,.3),0 0 22px rgba(255,200,130,.32)}
+body.night .ribbon-mark{filter:drop-shadow(0 0 9px rgba(255,200,130,.55))}
+body.night #book{box-shadow:
+  3px 4px 0 rgba(120,96,60,.5), 6px 8px 0 rgba(110,88,54,.5),
+  9px 12px 0 rgba(100,80,48,.5), 12px 16px 0 rgba(92,72,42,.5),
+  0 46px 84px -34px rgba(0,0,0,.7), 0 0 70px rgba(255,190,120,.14)}
+
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.2s!important}
   .ribbon-mark{animation:none}
