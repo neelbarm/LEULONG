@@ -332,6 +332,24 @@
       const cxx = e.clientX / innerWidth - 0.5, cyy = e.clientY / innerHeight - 0.5;
       tilts.forEach((t) => { if (!t.offsetParent) return; t.style.transform = `perspective(900px) rotateY(${cxx * 12}deg) rotateX(${-cyy * 8}deg)`; });
     }, { passive: true });
+
+    // the book comes alive: tilt toward the cursor, breathe gently when idle
+    if (innerWidth > 820) {
+      const bookEl = $("#book");
+      let bx = 0, by = 0, mx = 0, my = 0, idle = 999;
+      addEventListener("mousemove", (e) => {
+        mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; idle = 0;
+      }, { passive: true });
+      const life = (t) => {
+        idle++;
+        const tgX = idle > 90 ? Math.sin(t / 1500) * 0.9 : mx * 6.5;   // idle sway vs cursor tilt
+        const tgY = idle > 90 ? Math.cos(t / 1900) * 0.5 : -my * 5;
+        bx += (tgX - bx) * 0.05; by += (tgY - by) * 0.05;
+        if (bookEl) bookEl.style.transform = `rotateY(${bx.toFixed(2)}deg) rotateX(${by.toFixed(2)}deg)`;
+        requestAnimationFrame(life);
+      };
+      requestAnimationFrame(life);
+    }
   }
 
   /* ---------- BACKGROUND PARTICLES ---------- */
