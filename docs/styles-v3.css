@@ -325,7 +325,27 @@ body.night #book{box-shadow:
   9px 12px 0 rgba(100,80,48,.5), 12px 16px 0 rgba(92,72,42,.5),
   0 46px 84px -34px rgba(0,0,0,.7), 0 0 70px rgba(255,190,120,.14)}
 
+/* ===================== EXTRA LIFE ===================== */
+/* ink-reveal: headlines wipe in like fresh writing when a page appears */
+.page .display,.page .feat-title{clip-path:inset(0 100% 0 0)}
+.page.showing .display,.page.showing .feat-title{animation:inkReveal .9s cubic-bezier(.5,0,.2,1) forwards}
+@keyframes inkReveal{to{clip-path:inset(0 0 0 0)}}
+
+/* the streak flame leans toward the cursor (JS sets transform) */
+.flame{transition:transform .2s ease-out}
+
+/* chapter-name tooltips on the scrubber dots */
+.dots i{position:relative}
+.dots i::after{content:attr(data-ch);position:absolute;bottom:22px;left:50%;
+  transform:translateX(-50%) translateY(4px);white-space:nowrap;font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;font-weight:600;color:var(--ink);background:var(--paper);padding:4px 9px;
+  border-radius:7px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s}
+.dots i:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+body.night .dots i::after{background:rgba(40,28,18,.94);color:#f3e6cf}
+@media (max-width:520px){.dots i::after{display:none}}
+
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.2s!important}
   .ribbon-mark{animation:none}
+  .page .display,.page .feat-title{clip-path:none!important;animation:none!important}
 }

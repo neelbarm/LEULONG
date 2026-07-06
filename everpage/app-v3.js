@@ -18,8 +18,11 @@
   /* ---------- CHROME: dots, folio ---------- */
   const dotsWrap = $("#dots"), folioNum = $("#folioNum"), folioTot = $("#folioTot");
   if (folioTot) folioTot.textContent = TOTAL;
+  const CH_TITLES = { 0: "Cover", 1: "The habit", 2: "Your shelf", 3: "Streaks & goals",
+    4: "Read with friends", 5: "Your 2026 Wrapped", 6: "Join the waitlist", 7: "The last page" };
   pageEls.forEach((p, i) => {
     const d = document.createElement("i");
+    d.dataset.ch = CH_TITLES[+p.dataset.page] || `Page ${+p.dataset.page + 1}`;
     d.addEventListener("click", () => jump(+p.dataset.page));
     dotsWrap.appendChild(d);
   });
@@ -297,10 +300,14 @@
   }
   wName?.addEventListener("input", drawWrapped);
   $("#wShuffle")?.addEventListener("click", shuffleStats);
-  $("#wDownload")?.addEventListener("click", () => {
+  $("#wDownload")?.addEventListener("click", (e) => {
     try {
+      const slug = (wName?.value || "reader").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "reader";
       const a = document.createElement("a");
-      a.download = "everpage-wrapped.png"; a.href = wc.toDataURL("image/png"); a.click();
+      a.download = `everpage-wrapped-${slug}.png`; a.href = wc.toDataURL("image/png"); a.click();
+      const btn = e.currentTarget, old = btn.innerHTML;
+      btn.innerHTML = "✓ Saved!"; setTimeout(() => { btn.innerHTML = old; }, 1600);
+      const r = wc.getBoundingClientRect(); burst(r.left + r.width / 2, r.top + r.height / 2, 30);
     } catch {}
   });
   // fonts may load after first paint — redraw when ready
@@ -331,6 +338,13 @@
     addEventListener("mousemove", (e) => {
       const cxx = e.clientX / innerWidth - 0.5, cyy = e.clientY / innerHeight - 0.5;
       tilts.forEach((t) => { if (!t.offsetParent) return; t.style.transform = `perspective(900px) rotateY(${cxx * 12}deg) rotateX(${-cyy * 8}deg)`; });
+    }, { passive: true });
+
+    // the streak flame leans toward the cursor
+    const flames = $$(".flame");
+    addEventListener("mousemove", (e) => {
+      const lean = (e.clientX / innerWidth - 0.5) * 12;
+      flames.forEach((f) => { if (f.offsetParent) f.style.transform = `rotate(${lean.toFixed(1)}deg)`; });
     }, { passive: true });
 
     // the book comes alive: tilt toward the cursor, breathe gently when idle
