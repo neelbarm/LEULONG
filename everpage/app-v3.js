@@ -19,7 +19,7 @@
   const dotsWrap = $("#dots"), folioNum = $("#folioNum"), folioTot = $("#folioTot");
   if (folioTot) folioTot.textContent = TOTAL;
   const CH_TITLES = { 0: "Cover", 1: "The habit", 2: "Your shelf", 3: "Streaks & goals",
-    4: "Read with friends", 5: "Your 2026 Wrapped", 6: "Join the waitlist", 7: "The last page" };
+    4: "Read with friends", 5: "Your 2026 Wrapped", 6: "Get the app", 7: "The last page" };
   pageEls.forEach((p, i) => {
     const d = document.createElement("i");
     d.dataset.ch = CH_TITLES[+p.dataset.page] || `Page ${+p.dataset.page + 1}`;
@@ -391,39 +391,19 @@
     })();
   }
 
-  /* ---------- WAITLIST + CONFETTI ---------- */
-  const KEY = "everpage_waitlist", base = 2014;
-  const stored = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } };
-  const refreshCount = () => { const s = $("#spotCount"); if (s) s.textContent = fmt(base + stored().length); };
-  refreshCount();
-  $$("[data-join]").forEach((form) => form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const input = $("input[type=email]", form), email = (input?.value || "").trim();
-    if (!email) return;
-    const list = stored(); if (!list.includes(email)) list.push(email);
-    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch {}
-    refreshCount();
-    // real capture: email each signup to the EverPage inbox (FormSubmit, no account)
-    try {
-      fetch("https://formsubmit.co/ajax/everpageofficial@gmail.com", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          email,
-          _subject: "New EverPage waitlist signup 📖",
-          _template: "table",
-          _captcha: "false",
-          _autoresponse: "You're on the EverPage waitlist! We'll email you the moment early access opens. Happy reading — the EverPage team.",
-        }),
-      }).catch(() => {});
-    } catch {}
-    const wrap = form.closest(".join-inner");
-    const success = $(".join-success", wrap), placeEl = $("[data-place]", wrap);
-    if (placeEl) placeEl.textContent = "#" + fmt(base + list.length);
-    if (success) { success.hidden = false; form.style.display = "none"; }
-    burst(innerWidth / 2, innerHeight / 2, 54);
-    if (input) input.value = "";
-  }));
+  /* ---------- LAUNCH CTA + CONFETTI ---------- */
+  const asBtn = $("#appStoreBtn");
+  asBtn?.addEventListener("click", (e) => {
+    burst(innerWidth / 2, innerHeight * 0.42, 44);   // celebrate the download
+    if (asBtn.dataset.placeholder) {                 // until the real link is set
+      e.preventDefault();
+      const t = asBtn.querySelector(".as-text b");
+      if (t && !t.dataset.busy) {
+        t.dataset.busy = "1"; const old = t.textContent; t.textContent = "Dropping soon ✨";
+        setTimeout(() => { t.textContent = old; delete t.dataset.busy; }, 1600);
+      }
+    }
+  });
 
   const cc = $("#confetti"), cctx = cc.getContext("2d");
   let conf = [], CW, CH, rafc = null;
