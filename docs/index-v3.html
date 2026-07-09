@@ -4,25 +4,133 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#7C2020" />
-<title>EverPage — The Living Book</title>
+<title>EverPage — Reading Tracker App with Streaks, Goals &amp; Friends</title>
+<link rel="canonical" href="https://www.everpage.blog/" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="author" content="EverPage" />
+<meta name="keywords" content="reading app, reading tracker, reading streak, book tracker, reading goals, read with friends, reading log, daily reading goal, reading stats, book shelf app" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/favicon.png" />
+<meta property="og:site_name" content="EverPage" />
+<meta property="og:image:alt" content="EverPage — read together, track everything, build your streak." />
 <meta name="description" content="Turn the pages of EverPage: the reading app that turns reading into a streak. Track every page, build a daily streak, race your friends. Now on the App Store." />
 <meta property="og:title" content="EverPage — the reading app that gives you a streak" />
 <meta property="og:description" content="Turn every page. Build your streak. Read with friends. Now on the App Store." />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://everpage2.vercel.app/" />
-<meta property="og:image" content="https://everpage2.vercel.app/assets/og.png" />
+<meta property="og:url" content="https://www.everpage.blog/" />
+<meta property="og:image" content="https://www.everpage.blog/assets/og.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="EverPage — the reading app that gives you a streak" />
 <meta name="twitter:description" content="Turn every page. Build your streak. Read with friends. Now on the App Store." />
-<meta name="twitter:image" content="https://everpage2.vercel.app/assets/og.png" />
+<meta name="twitter:image" content="https://www.everpage.blog/assets/og.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles-v3.css" />
+
+<!-- Structured data for search + AI answer engines -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.everpage.blog/#org",
+      "name": "EverPage",
+      "url": "https://www.everpage.blog/",
+      "logo": "https://www.everpage.blog/favicon.png",
+      "image": "https://www.everpage.blog/assets/og.png",
+      "description": "EverPage is a reading app that turns reading into a daily streak, with reading goals, a personal shelf, stats, and friendly competition.",
+      "sameAs": [
+        "https://www.instagram.com/everpageofficial",
+        "https://www.tiktok.com/@everpageofficial",
+        "https://substack.com/@leaateverpage"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.everpage.blog/#website",
+      "name": "EverPage",
+      "url": "https://www.everpage.blog/",
+      "publisher": { "@id": "https://www.everpage.blog/#org" }
+    },
+    {
+      "@type": "MobileApplication",
+      "name": "EverPage",
+      "operatingSystem": "iOS",
+      "applicationCategory": "LifestyleApplication",
+      "url": "https://www.everpage.blog/",
+      "image": "https://www.everpage.blog/assets/og.png",
+      "description": "EverPage turns reading into a daily streak. Add books to your shelf, track progress page by page, set a daily reading goal in minutes, keep your streak with streak freezes, see your reading stats and a yearly Wrapped, and read alongside friends on a leaderboard.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@id": "https://www.everpage.blog/#org" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is EverPage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EverPage is a reading app that turns reading into a daily streak. You add books to your shelf, track your progress page by page, set a daily reading goal in minutes, and keep your streak alive with streak freezes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does EverPage help you read more?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EverPage gamifies reading with daily goals and streaks, shows your reading minutes, pages per week, and a yearly Wrapped, and lets you compete with friends on a leaderboard so you stay motivated to read every day."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you read with friends on EverPage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. EverPage lets you see what friends are reading right now, compare your weekly minutes and pages, cheer each other on, and share quotes from the books you love."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What platforms is EverPage available on?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EverPage is available on iOS via the App Store, with an Android version coming soon."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is EverPage free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EverPage is free to download from the App Store."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body class="v3 is-closed">
+
+<noscript>
+  <div style="max-width:720px;margin:0 auto;padding:48px 24px;font-family:Georgia,serif;color:#234E52;line-height:1.6">
+    <h1>EverPage — the reading app that gives you a streak</h1>
+    <p>EverPage turns reading into a daily habit you won't want to break. Add books to your reading shelf, track your progress page by page, set a daily reading goal in minutes, and keep your streak alive with streak freezes.</p>
+    <p>See your reading stats and a yearly Wrapped, and read alongside friends — compare your weekly minutes and pages, cheer each other on a leaderboard, and share the lines that wrecked you.</p>
+    <p><strong>EverPage is now available on the App Store</strong> (Android coming soon).</p>
+    <p>Follow along:
+      <a href="https://www.instagram.com/everpageofficial">Instagram</a> ·
+      <a href="https://www.tiktok.com/@everpageofficial">TikTok</a> ·
+      <a href="https://substack.com/@leaateverpage">Substack</a>
+    </p>
+  </div>
+</noscript>
 
 <canvas id="fx" aria-hidden="true"></canvas>
 <div id="cursor" aria-hidden="true"></div>
